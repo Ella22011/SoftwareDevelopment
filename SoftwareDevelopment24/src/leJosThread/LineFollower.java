@@ -22,7 +22,7 @@ public class LineFollower extends Thread {
 	public void run() {
 		// Infinite Task
 		while (true) {
-			//Get value from the ColorSensor Thread
+			//Get value from the ColorSensor
 			int colorDetected = DEObj.getLineChecker();
 			int count = DEObj.getCycle();
 
@@ -79,7 +79,6 @@ public class LineFollower extends Thread {
 					Sound.buzz();
 
 				} else if(count > 1){
-					//System.out.println("Cycle: " + count);
 					
 					leftWheel.stop();
 					rightWheel.stop();
