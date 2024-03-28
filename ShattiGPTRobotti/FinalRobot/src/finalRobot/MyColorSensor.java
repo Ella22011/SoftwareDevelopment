@@ -8,30 +8,31 @@ import lejos.robotics.SampleProvider;
 
 public class MyColorSensor implements Runnable {
 
-	 DataExchange DEObj;
-	    
-	    public MyColorSensor(DataExchange DE) {
-	        this.DEObj = DE;
+    DataExchange DEObj;
 
-	    }
+    public MyColorSensor(DataExchange DE) {
+        this.DEObj = DE;
 
-	    @Override
-	    public void run() {
+    }
 
-	        EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S3);
-	        SampleProvider redMode = colorSensor.getRedMode();
-	        float[] sample = new float[redMode.sampleSize()];
+    @Override
+    public void run() {
 
-	        colorSensor.setFloodlight(Color.RED);
-	      
-	        while (!Button.ENTER.isDown()) {
-	            redMode.fetchSample(sample, 0);
-	            float redValue = sample[0] * 100;
-	          
-	            DEObj.setRedvalue(redValue);
-	        
-	        }
-	        colorSensor.close();
-	    }
-	
+        EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S3);
+        SampleProvider redMode = colorSensor.getRedMode();
+        float[] sample = new float[redMode.sampleSize()];
+
+        colorSensor.setFloodlight(Color.RED);
+
+        while (!Button.ENTER.isDown()) {
+            redMode.fetchSample(sample, 0);
+            float redValue = sample[0] * 100;
+
+            DEObj.setRedvalue(redValue);
+
+        }
+        colorSensor.close();
+    }
+
 }
+

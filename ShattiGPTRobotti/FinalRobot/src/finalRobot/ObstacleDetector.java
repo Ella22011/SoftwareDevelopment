@@ -1,7 +1,6 @@
 package finalRobot;
 
 import lejos.hardware.Button;
-import lejos.hardware.motor.UnregulatedMotor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
@@ -10,13 +9,9 @@ import lejos.utility.Delay;
 public class ObstacleDetector implements Runnable {
 
     DataExchange DEObj;
-    UnregulatedMotor motorA;
-    UnregulatedMotor motorB;
 
-    public ObstacleDetector(DataExchange DE, UnregulatedMotor motorA, UnregulatedMotor motorB) {
+    public ObstacleDetector(DataExchange DE) {
         this.DEObj = DE;
-        this.motorA = motorA;
-        this.motorB = motorB;
     }
 
     @Override
@@ -30,28 +25,14 @@ public class ObstacleDetector implements Runnable {
             distanceMode.fetchSample(ultrasonicSample, 0);
             float distance = ultrasonicSample[0] * 100;
 
-            System.out.println(distance);
+            // Update distance in DataExchange
+            DEObj.setDistance(distance);
+
+            // Check if obstacle detected
             if (distance < 10) {
-                motorA.setPower(0);
-                motorB.setPower(40);
-                Delay.msDelay(750);
-
-                motorA.setPower(30);
-                motorB.setPower(30);
-                Delay.msDelay(1500);
-
-                motorA.setPower(40);
-                motorB.setPower(0);
-                Delay.msDelay(1250);
-
-                motorA.setPower(30);
-                motorB.setPower(30);
-                Delay.msDelay(1500);
-
-                motorA.setPower(0);
-                motorB.setPower(40);
-                Delay.msDelay(500);
+                DEObj.setObstacleDetected(true);
             }
+
             Delay.msDelay(100);
         }
         ultraSonic.close();
