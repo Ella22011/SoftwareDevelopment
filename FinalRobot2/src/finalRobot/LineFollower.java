@@ -7,6 +7,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
+import lejos.utility.Stopwatch;
 
 /**
  * The LineFollower class implements the behavior of a line-following robot.
@@ -38,6 +39,9 @@ public class LineFollower implements Runnable {
         float[] sample = new float[redMode.sampleSize()];
 
         colorSensor.setFloodlight(Color.RED);
+
+        // Initialize stopwatch at the beginning of the run
+        Stopwatch stopwatch = new Stopwatch();
 
         while (!Button.ENTER.isDown()) {
             redMode.fetchSample(sample, 0);
@@ -81,11 +85,19 @@ public class LineFollower implements Runnable {
                     // Reset obstacle detection
                     DEObj.setObstacleDetected(false);
                     obstacleAvoided = true; // Set obstacle avoided flag to true
+
+                 // Stop the stopwatch when obstacle is detected
+                    long elapsedTime = stopwatch.elapsed();
+                    System.out.println("Time: " + (elapsedTime / 1000) + " seconds");
                 } else { // Obstacle already avoided once
-                    // Add code here for further actions after avoiding obstacle
+                    // Stop motors and exit
+                    motorA.stop();
+                    motorB.stop();
+                    return;
                 }
             }
         }
         colorSensor.close();
     }
 }
+

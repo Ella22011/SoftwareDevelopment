@@ -4,7 +4,6 @@ import lejos.hardware.Button;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
-import lejos.utility.Delay;
 
 /**
  * The ObstacleDetector class detects obstacles using an ultrasonic sensor.
@@ -12,6 +11,7 @@ import lejos.utility.Delay;
 public class ObstacleDetector implements Runnable {
 
     private DataExchange DEObj;
+    private EV3UltrasonicSensor ultraSonic;
 
     /**
      * New ObstacleDetector object.
@@ -20,11 +20,11 @@ public class ObstacleDetector implements Runnable {
      */
     public ObstacleDetector(DataExchange DE) {
         this.DEObj = DE;
+        this.ultraSonic = new EV3UltrasonicSensor(SensorPort.S4);
     }
 
     @Override
     public void run() {
-        EV3UltrasonicSensor ultraSonic = new EV3UltrasonicSensor(SensorPort.S4);
         SampleProvider distanceMode = ultraSonic.getDistanceMode();
         float[] ultrasonicSample = new float[distanceMode.sampleSize()];
 
@@ -38,9 +38,15 @@ public class ObstacleDetector implements Runnable {
             // Checks if obstacle is detected
             if (distance < 10) {
                 DEObj.setObstacleDetected(true);
+            } else {
+                DEObj.setObstacleDetected(false);
             }
 
-            Delay.msDelay(100);
+            try {
+                Thread.sleep(100); // Adjust sleep time as needed
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         ultraSonic.close();
     }

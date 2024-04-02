@@ -22,10 +22,9 @@ public class Robot {
     private static DataExchange DE;
     private static LineFollower LFObj;
     private static ObstacleDetector OBObj;
-    private static Stopwatch stopwatch; // Using Stopwatch for timing
+    public static Stopwatch stopwatch; // Using Stopwatch for timing
 
     public static void main(String[] args) {
-
         DE = new DataExchange();
         UnregulatedMotor motorA = new UnregulatedMotor(MotorPort.A);
         UnregulatedMotor motorB = new UnregulatedMotor(MotorPort.B);
@@ -35,9 +34,6 @@ public class Robot {
 
         Thread obstacleThread = new Thread(OBObj);
         Thread lineFollowerThread = new Thread(LFObj);
-
-        // Initialize the Stopwatch 
-        stopwatch = new Stopwatch(); 
 
         lineFollowerThread.start();
         obstacleThread.start();
@@ -50,10 +46,8 @@ public class Robot {
         } finally {
             motorA.close();
             motorB.close();
-            
-         // Get elapsed time in seconds
-            long elapsedTimeSeconds = stopwatch.elapsed() / 1000; // Convert milliseconds to seconds
-            System.out.println("Time: " + elapsedTimeSeconds + " seconds");
+        }
     }
+
 }
-}
+
