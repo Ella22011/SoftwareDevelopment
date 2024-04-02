@@ -8,12 +8,22 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
+/**
+ * The LineFollower class implements the behavior of a line-following robot.
+ */
 public class LineFollower implements Runnable {
 
-    DataExchange DEObj;
-    UnregulatedMotor motorA;
-    UnregulatedMotor motorB;
+    private DataExchange DEObj;
+    private UnregulatedMotor motorA;
+    private UnregulatedMotor motorB;
 
+    /**
+     * new LineFollower object.
+     *
+     * @param DE The DataExchange object for communication with other components.
+     * @param motorA The UnregulatedMotor object representing the left motor.
+     * @param motorB The UnregulatedMotor object representing the right motor.
+     */
     public LineFollower(DataExchange DE, UnregulatedMotor motorA, UnregulatedMotor motorB) {
         this.DEObj = DE;
         this.motorA = motorA;
@@ -22,7 +32,6 @@ public class LineFollower implements Runnable {
 
     @Override
     public void run() {
-
         EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S3);
         SampleProvider redMode = colorSensor.getRedMode();
         float[] sample = new float[redMode.sampleSize()];
@@ -46,7 +55,7 @@ public class LineFollower implements Runnable {
 
             // Check if obstacle is detected
             if (DEObj.getObstacleDetected()) {
-                // Perform avoidance maneuver
+                // Avoid obstacle
                 motorA.setPower(0);
                 motorB.setPower(40);
                 Delay.msDelay(750);
@@ -67,7 +76,7 @@ public class LineFollower implements Runnable {
                 motorB.setPower(40);
                 Delay.msDelay(500);
 
-                // Reset obstacle detection flag
+                // Reset obstacle detection
                 DEObj.setObstacleDetected(false);
             }
         }

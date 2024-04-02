@@ -5,11 +5,18 @@ import lejos.hardware.port.MotorPort;
 import lejos.utility.Stopwatch;
 
 /**
+ * This program controls an EV3 robot to follow a black line and avoid obstacles.
+ * 
  * Date: April 2024
- * This is a program for lego EV3 robot, which will follow a black line and avoid an obstacle.
+ * Team 16 - Error 404
+ * 
+ * Components:
+ * - DataExchange: Manages data exchange between different threads.
+ * - LineFollower: Controls the robot using two unregulated motors.
+ * - ObstacleDetector: Detects obstacles using an ultrasonic sensor.
+ * - MyColorSensot: Detects the black line using a red light.
  * 
  */
-
 public class Robot {
 
     private static DataExchange DE;
@@ -29,11 +36,8 @@ public class Robot {
         Thread obstacleThread = new Thread(OBObj);
         Thread lineFollowerThread = new Thread(LFObj);
 
-        /**
-         * Initialize the Stopwatch 
-         */
+        // Initialize the Stopwatch 
         stopwatch = new Stopwatch(); 
- 
 
         lineFollowerThread.start();
         obstacleThread.start();
@@ -46,9 +50,8 @@ public class Robot {
         } finally {
             motorA.close();
             motorB.close();
-         /**
-          *  Get elapsed time in milliseconds
-          */
+            
+            // Get elapsed time in milliseconds
             long elapsedTime = stopwatch.elapsed(); 
             System.out.println("Elapsed Time: " + elapsedTime + " milliseconds");
         }
