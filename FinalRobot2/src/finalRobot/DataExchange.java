@@ -7,7 +7,7 @@ package finalRobot;
 public class DataExchange {
     
     private boolean obstacleDetected = false; // Flag to indicate if an obstacle is detected
-    private int obstacleCount = 0; // Counter for detecting obstacle twice
+    
     private float redvalue; // Value representing red color detected by the sensor
     private float distance; // Distance measured by the sensor
     
@@ -59,9 +59,6 @@ public class DataExchange {
      */
     public void setObstacleDetected(boolean status) {
         obstacleDetected = status;
-        if (status) {
-            obstacleCount++;
-        }
     }
 
     /**
@@ -71,14 +68,5 @@ public class DataExchange {
      */
     public boolean getObstacleDetected() {
         return obstacleDetected;
-    }
-    
-    /**
-     * Check if obstacle has been detected twice.
-     * 
-     * @return True if obstacle has been detected twice, otherwise false.
-     */
-    public boolean getObstacleDetectedTwice() {
-        return obstacleCount >= 2;
     }
 }

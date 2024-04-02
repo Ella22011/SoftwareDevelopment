@@ -16,6 +16,7 @@ public class LineFollower implements Runnable {
     private DataExchange DEObj;
     private UnregulatedMotor motorA;
     private UnregulatedMotor motorB;
+    private boolean obstacleAvoided = false; // Flag to track if obstacle has been avoided once
 
     /**
      * new LineFollower object.
@@ -55,29 +56,34 @@ public class LineFollower implements Runnable {
 
             // Check if obstacle is detected
             if (DEObj.getObstacleDetected()) {
-                // Avoid obstacle
-                motorA.setPower(0);
-                motorB.setPower(40);
-                Delay.msDelay(750);
+                if (!obstacleAvoided) { // If obstacle hasn't been avoided yet
+                    // Avoid obstacle
+                    motorA.setPower(0);
+                    motorB.setPower(40);
+                    Delay.msDelay(750);
 
-                motorA.setPower(30);
-                motorB.setPower(30);
-                Delay.msDelay(1500);
+                    motorA.setPower(30);
+                    motorB.setPower(30);
+                    Delay.msDelay(1500);
 
-                motorA.setPower(40);
-                motorB.setPower(0);
-                Delay.msDelay(1250);
+                    motorA.setPower(40);
+                    motorB.setPower(0);
+                    Delay.msDelay(1250);
 
-                motorA.setPower(30);
-                motorB.setPower(30);
-                Delay.msDelay(1500);
+                    motorA.setPower(30);
+                    motorB.setPower(30);
+                    Delay.msDelay(1500);
 
-                motorA.setPower(0);
-                motorB.setPower(40);
-                Delay.msDelay(500);
+                    motorA.setPower(0);
+                    motorB.setPower(40);
+                    Delay.msDelay(500);
 
-                // Reset obstacle detection
-                DEObj.setObstacleDetected(false);
+                    // Reset obstacle detection
+                    DEObj.setObstacleDetected(false);
+                    obstacleAvoided = true; // Set obstacle avoided flag to true
+                } else { // Obstacle already avoided once
+                    // Add code here for further actions after avoiding obstacle
+                }
             }
         }
         colorSensor.close();

@@ -43,29 +43,17 @@ public class Robot {
         obstacleThread.start();
 
         try {
-            // Wait for the robot to complete the track and detect the obstacle for the second time
-            while (!DE.getObstacleDetectedTwice()) {
-                Thread.sleep(100); // Sleep for 100 milliseconds
-            }
+            lineFollowerThread.join();
+            obstacleThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             motorA.close();
             motorB.close();
             
-            // Get elapsed time in milliseconds
-            long elapsedTime = stopwatch.elapsed(); 
-            System.out.println("Elapsed Time: " + elapsedTime + " milliseconds");
-
-            // Wait for 40 seconds
-            try {
-                Thread.sleep(40000); // Sleep for 40 seconds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            // Play music here
- 
-        }
+         // Get elapsed time in seconds
+            long elapsedTimeSeconds = stopwatch.elapsed() / 1000; // Convert milliseconds to seconds
+            System.out.println("Time: " + elapsedTimeSeconds + " seconds");
     }
+}
 }
