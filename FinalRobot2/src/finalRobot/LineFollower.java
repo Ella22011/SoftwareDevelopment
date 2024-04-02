@@ -18,6 +18,8 @@ public class LineFollower implements Runnable {
     private UnregulatedMotor motorA;
     private UnregulatedMotor motorB;
     private boolean obstacleAvoided = false; // Flag to track if obstacle has been avoided once
+    private boolean obstacleDetectedTwice = false; // Flag to track if obstacle has been detected twice
+    private Stopwatch stopwatch;
 
     /**
      * new LineFollower object.
@@ -30,6 +32,7 @@ public class LineFollower implements Runnable {
         this.DEObj = DE;
         this.motorA = motorA;
         this.motorB = motorB;
+        this.stopwatch = new Stopwatch();
     }
 
     @Override
@@ -39,9 +42,6 @@ public class LineFollower implements Runnable {
         float[] sample = new float[redMode.sampleSize()];
 
         colorSensor.setFloodlight(Color.RED);
-
-        // Initialize stopwatch at the beginning of the run
-        Stopwatch stopwatch = new Stopwatch();
 
         while (!Button.ENTER.isDown()) {
             redMode.fetchSample(sample, 0);
@@ -85,11 +85,12 @@ public class LineFollower implements Runnable {
                     // Reset obstacle detection
                     DEObj.setObstacleDetected(false);
                     obstacleAvoided = true; // Set obstacle avoided flag to true
-
-                 // Stop the stopwatch when obstacle is detected
-                    long elapsedTime = stopwatch.elapsed();
-                    System.out.println("Time: " + (elapsedTime / 1000) + " seconds");
-                } else { // Obstacle already avoided once
+                } else if (!obstacleDetectedTwice) { // Obstacle already avoided once
+                    // Stop the stopwatch when obstacle is detected the second time
+                	long elapsedTime = stopwatch.elapsed();
+                	System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
+                    obstacleDetectedTwice = true;
+                    
                     // Stop motors and exit
                     motorA.stop();
                     motorB.stop();
