@@ -25,10 +25,14 @@ public class ObstacleDetector implements Runnable {
             distanceMode.fetchSample(ultrasonicSample, 0);
             float distance = ultrasonicSample[0] * 100;
 
-            // Update distance in DataExchange
+            /**
+             *  Updates distance in DataExchange
+             */
             DEObj.setDistance(distance);
 
-            // Check if obstacle detected
+            /** 
+             * Checks if obstacle is detected
+             */
             if (distance < 10) {
                 DEObj.setObstacleDetected(true);
             }

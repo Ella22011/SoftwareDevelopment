@@ -2,12 +2,20 @@ package finalRobot;
 
 import lejos.hardware.motor.UnregulatedMotor;
 import lejos.hardware.port.MotorPort;
+import lejos.utility.Stopwatch;
+
+/**
+ * Date: April 2024
+ * This is a program for lego EV3 robot, which will follow a black line and avoid an obstacle.
+ * 
+ */
 
 public class Robot {
 
     private static DataExchange DE;
     private static LineFollower LFObj;
     private static ObstacleDetector OBObj;
+    private static Stopwatch stopwatch; // Using Stopwatch for timing
 
     public static void main(String[] args) {
 
@@ -21,6 +29,12 @@ public class Robot {
         Thread obstacleThread = new Thread(OBObj);
         Thread lineFollowerThread = new Thread(LFObj);
 
+        /**
+         * Initialize the Stopwatch 
+         */
+        stopwatch = new Stopwatch(); 
+ 
+
         lineFollowerThread.start();
         obstacleThread.start();
 
@@ -32,6 +46,11 @@ public class Robot {
         } finally {
             motorA.close();
             motorB.close();
+         /**
+          *  Get elapsed time in milliseconds
+          */
+            long elapsedTime = stopwatch.elapsed(); 
+            System.out.println("Elapsed Time: " + elapsedTime + " milliseconds");
         }
     }
 }
