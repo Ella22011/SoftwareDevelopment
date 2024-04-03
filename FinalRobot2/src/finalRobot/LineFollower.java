@@ -1,6 +1,9 @@
 package finalRobot;
 
+import java.io.File;
+
 import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.motor.UnregulatedMotor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
@@ -90,6 +93,13 @@ public class LineFollower implements Runnable {
                 	long elapsedTime = stopwatch.elapsed();
                 	System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
                     obstacleDetectedTwice = true;
+                    
+                    // Pause before playing music
+                    Delay.msDelay(20000); //20 seconds, Adjust delay time as needed
+
+                    // Play music
+                    Sound.playSample(new File("spinMe.wav"), Sound.VOL_MAX);
+                	System.out.println("Spin me right round baby");
                     
                     // Stop motors and exit
                     motorA.stop();
