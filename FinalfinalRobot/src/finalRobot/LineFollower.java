@@ -1,14 +1,7 @@
 package finalRobot;
 
-import java.io.File;
-
 import lejos.hardware.Button;
-import lejos.hardware.Sound;
 import lejos.hardware.motor.UnregulatedMotor;
-import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.robotics.Color;
-import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
 
@@ -40,15 +33,8 @@ public class LineFollower implements Runnable {
 
     @Override
     public void run() {
-        EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S3);
-        SampleProvider redMode = colorSensor.getRedMode();
-        float[] sample = new float[redMode.sampleSize()];
-
-        colorSensor.setFloodlight(Color.RED);
-
         while (!Button.ENTER.isDown()) {
-            redMode.fetchSample(sample, 0);
-            float redValue = sample[0] * 100;
+            float redValue = DEObj.getRedvalue();
 
             if (redValue > 40) {
                 motorA.setPower(50);
@@ -90,48 +76,19 @@ public class LineFollower implements Runnable {
                     obstacleAvoided = true; // Set obstacle avoided flag to true
                 } else if (!obstacleDetectedTwice) { // Obstacle already avoided once
                     // Stop the stopwatch when obstacle is detected the second time
-                	long elapsedTime = stopwatch.elapsed();
-                	System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
+                    long elapsedTime = stopwatch.elapsed();
+                    System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
                     obstacleDetectedTwice = true;
-                    
+
                     // Stop motors
                     motorA.stop();
                     motorB.stop();
-                    
-                    // Pause before playing music
-                    Delay.msDelay(5000); //5 seconds
-                    
-                    // Play music
-                    Sound.playSample(new File("SpinMeMono_v8.wav"),50);
-                    Delay.msDelay(2000); //2 seconds
-                	System.out.println("Spin me right round baby");
-                    
-
-                 // Play music
-                   playLondonBridgeMusic();
-                  
+                    Delay.msDelay(5000);
+                    Music.playMusic();
+                    Music.playLondonBridgeMusic(); // Play music
                     return;
                 }
             }
         }
-        colorSensor.close();
-    }
-
-    /**
-     * Method to play a part of "London Bridge Is Falling Down"
-     */
-    private void playLondonBridgeMusic() {
-    	int[] notes = { 392, 392, 440, 392, 349, 330, 294 };
-        int[] durations = { 200, 200, 400, 200, 200, 400, 400 };
-        // Play the song
-        for (int i = 0; i < notes.length; i++) {
-            Sound.playTone(notes[i], durations[i]);
-            try {
-                Thread.sleep(durations[i] + 50); // Add a small delay between notes
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
-

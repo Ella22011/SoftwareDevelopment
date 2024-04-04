@@ -13,7 +13,7 @@ public class ObstacleDetector implements Runnable {
     private DataExchange DEObj;
     private EV3UltrasonicSensor ultraSonic;
 
-    /**
+    /**                       
      * New ObstacleDetector object.
      *
      * @param DE The DataExchange object for communication.

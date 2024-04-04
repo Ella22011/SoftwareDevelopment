@@ -40,3 +40,4 @@ public class MyColorSensor implements Runnable {
         colorSensor.close();
     }
 }
+
