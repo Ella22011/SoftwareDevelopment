@@ -49,14 +49,14 @@ public class LineFollower implements Runnable {
             float redValue = sample[0] * 100;
 
             if (redValue > 40) {
-                motorA.setPower(25);
-                motorB.setPower(10);
-            } else if (redValue > 30 && redValue < 40) {
-                motorA.setPower(20);
+                motorA.setPower(50);
                 motorB.setPower(20);
+            } else if (redValue > 30 && redValue < 40) {
+                motorA.setPower(60);
+                motorB.setPower(60);
             } else {
-                motorA.setPower(10);
-                motorB.setPower(25);
+                motorA.setPower(20);
+                motorB.setPower(50);
             }
 
             // Check if obstacle is detected
@@ -69,7 +69,7 @@ public class LineFollower implements Runnable {
 
                     motorA.setPower(30);
                     motorB.setPower(30);
-                    Delay.msDelay(1500);
+                    Delay.msDelay(2000);
 
                     motorA.setPower(40);
                     motorB.setPower(0);
@@ -77,7 +77,7 @@ public class LineFollower implements Runnable {
 
                     motorA.setPower(30);
                     motorB.setPower(30);
-                    Delay.msDelay(1500);
+                    Delay.msDelay(2000);
 
                     motorA.setPower(0);
                     motorB.setPower(40);
@@ -97,10 +97,10 @@ public class LineFollower implements Runnable {
                     motorB.stop();
                     
                     // Pause before playing music
-                    Delay.msDelay(5000); //5 seconds, Adjust delay time as needed
-
+                    Delay.msDelay(5000); //5 seconds
+                    
                  // Play music
-                    playLondonBridgeMusic();
+                   playLondonBridgeMusic();
                   
                     return;
                 }
@@ -113,17 +113,27 @@ public class LineFollower implements Runnable {
      * Method to play a part of "London Bridge Is Falling Down"
      */
     private void playLondonBridgeMusic() {
-    	int[] notes = { 392, 392, 440, 392, 349, 330, 294 };
+        // Define notes and durations for each instrument
+        int[] bassNotes = { 196, 196, 220, 196, 175, 165, 147 };
+        int[] melodyNotes = { 392, 392, 440, 392, 349, 330, 294 };
         int[] durations = { 200, 200, 400, 200, 200, 400, 400 };
-        // Play the song
-        for (int i = 0; i < notes.length; i++) {
-            Sound.playTone(notes[i], durations[i]);
+
+        // Play the song with bass and melody
+        for (int i = 0; i < melodyNotes.length; i++) {
+            // Play bass
+            Sound.playTone(bassNotes[i], durations[i]);
+            // Add a small delay between bass and melody
+            Delay.msDelay(50);
+
+            // Play melody
+            Sound.playTone(melodyNotes[i], durations[i]);
+            
+            // Add a small delay between notes
             try {
-                Thread.sleep(durations[i] + 50); // Add a small delay between notes
+                Thread.sleep(durations[i] + 50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 }
-

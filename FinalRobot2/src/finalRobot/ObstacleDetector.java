@@ -36,7 +36,7 @@ public class ObstacleDetector implements Runnable {
             DEObj.setDistance(distance);
 
             // Checks if obstacle is detected
-            if (distance < 10) {
+            if (distance < 15) {
                 DEObj.setObstacleDetected(true);
             } else {
                 DEObj.setObstacleDetected(false);
