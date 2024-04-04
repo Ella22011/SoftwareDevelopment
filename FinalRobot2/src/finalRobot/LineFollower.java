@@ -94,21 +94,39 @@ public class LineFollower implements Runnable {
                 	System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
                     obstacleDetectedTwice = true;
                     
-                    // Pause before playing music
-                    Delay.msDelay(20000); //20 seconds, Adjust delay time as needed
-
-                    // Play music
-                    Sound.playSample(new File("8secSpinMe.wav"), Sound.VOL_MAX);
-                	System.out.println("Spin me right round baby");
-                    
-                    // Stop motors and exit
+                    // Stop motors
                     motorA.stop();
                     motorB.stop();
+                    
+                    // Pause before playing music
+                    Delay.msDelay(10000); //10 seconds, Adjust delay time as needed
+
+                 // Play music
+                    playLondonBridgeMusic();
+                  
                     return;
                 }
             }
         }
         colorSensor.close();
+    }
+
+    /**
+     * Method to play "London Bridge Is Falling Down"
+     */
+    private void playLondonBridgeMusic() {
+        int[] notes = { 392, 392, 440, 392, 349, 330, 294, 294, 330, 349, 392, 392, 349, 349, 392, 392, 440, 392, 349, 330, 294, 294, 330, 349, 392, 392, 349, 349, 392, 349, 330, 294 };
+        int[] durations = { 200, 200, 400, 200, 200, 400, 200, 200, 200, 200, 400, 200, 200, 200, 200, 200, 400, 200, 200, 400, 200, 200, 200, 200, 400, 200, 200, 200, 200, 400, 200, 200, 400 };
+
+        // Play the song
+        for (int i = 0; i < notes.length; i++) {
+            Sound.playTone(notes[i], durations[i]);
+            try {
+                Thread.sleep(durations[i] + 50); // Add a small delay between notes
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
