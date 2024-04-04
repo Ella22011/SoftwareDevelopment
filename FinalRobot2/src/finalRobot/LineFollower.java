@@ -1,5 +1,7 @@
 package finalRobot;
 
+import java.io.File;
+
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.motor.UnregulatedMotor;
@@ -99,6 +101,12 @@ public class LineFollower implements Runnable {
                     // Pause before playing music
                     Delay.msDelay(5000); //5 seconds
                     
+                    // Play music
+                    Sound.playSample(new File("SpinMeMono_v8.wav"),50);
+                    Delay.msDelay(2000); //2 seconds
+                	System.out.println("Spin me right round baby");
+                    
+
                  // Play music
                    playLondonBridgeMusic();
                   
@@ -113,27 +121,17 @@ public class LineFollower implements Runnable {
      * Method to play a part of "London Bridge Is Falling Down"
      */
     private void playLondonBridgeMusic() {
-        // Define notes and durations for each instrument
-        int[] bassNotes = { 196, 196, 220, 196, 175, 165, 147 };
-        int[] melodyNotes = { 392, 392, 440, 392, 349, 330, 294 };
+    	int[] notes = { 392, 392, 440, 392, 349, 330, 294 };
         int[] durations = { 200, 200, 400, 200, 200, 400, 400 };
-
-        // Play the song with bass and melody
-        for (int i = 0; i < melodyNotes.length; i++) {
-            // Play bass
-            Sound.playTone(bassNotes[i], durations[i]);
-            // Add a small delay between bass and melody
-            Delay.msDelay(50);
-
-            // Play melody
-            Sound.playTone(melodyNotes[i], durations[i]);
-            
-            // Add a small delay between notes
+        // Play the song
+        for (int i = 0; i < notes.length; i++) {
+            Sound.playTone(notes[i], durations[i]);
             try {
-                Thread.sleep(durations[i] + 50);
+                Thread.sleep(durations[i] + 50); // Add a small delay between notes
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 }
+

@@ -2,10 +2,6 @@ package finalRobot;
 
 import lejos.hardware.Button;
 import lejos.hardware.motor.UnregulatedMotor;
-import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.robotics.Color;
-import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 import lejos.utility.Stopwatch;
 
@@ -37,15 +33,8 @@ public class LineFollower implements Runnable {
 
     @Override
     public void run() {
-        EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S3);
-        SampleProvider redMode = colorSensor.getRedMode();
-        float[] sample = new float[redMode.sampleSize()];
-
-        colorSensor.setFloodlight(Color.RED);
-
         while (!Button.ENTER.isDown()) {
-            redMode.fetchSample(sample, 0);
-            float redValue = sample[0] * 100;
+            float redValue = DEObj.getRedvalue();
 
             if (redValue > 40) {
                 motorA.setPower(50);
@@ -87,20 +76,19 @@ public class LineFollower implements Runnable {
                     obstacleAvoided = true; // Set obstacle avoided flag to true
                 } else if (!obstacleDetectedTwice) { // Obstacle already avoided once
                     // Stop the stopwatch when obstacle is detected the second time
-                	long elapsedTime = stopwatch.elapsed();
-                	System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
+                    long elapsedTime = stopwatch.elapsed();
+                    System.out.println("Time: " + (elapsedTime / 1000.0) + " seconds");
                     obstacleDetectedTwice = true;
-                    
+
                     // Stop motors
                     motorA.stop();
                     motorB.stop();
                     Delay.msDelay(5000);
                     Music.playMusic();
+                    Music.playLondonBridgeMusic(); // Play music
                     return;
                 }
             }
         }
-        colorSensor.close();
     }
-
 }
