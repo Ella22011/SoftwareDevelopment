@@ -1,7 +1,5 @@
 package finalRobot;
 
-import java.io.File;
-
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.motor.UnregulatedMotor;
@@ -107,17 +105,16 @@ public class LineFollower implements Runnable {
                     return;
                 }
             }
+            colorSensor.close();
         }
-        colorSensor.close();
     }
 
     /**
      * Method to play "London Bridge Is Falling Down"
      */
     private void playLondonBridgeMusic() {
-        int[] notes = { 392, 392, 440, 392, 349, 330, 294, 294, 330, 349, 392, 392, 349, 349, 392, 392, 440, 392, 349, 330, 294, 294, 330, 349, 392, 392, 349, 349, 392, 349, 330, 294 };
-        int[] durations = { 200, 200, 400, 200, 200, 400, 200, 200, 200, 200, 400, 200, 200, 200, 200, 200, 400, 200, 200, 400, 200, 200, 200, 200, 400, 200, 200, 200, 200, 400, 200, 200, 400 };
-
+    	int[] notes = { 392, 392, 440, 392, 349, 330, 294 };
+        int[] durations = { 200, 200, 400, 200, 200, 400, 400 };
         // Play the song
         for (int i = 0; i < notes.length; i++) {
             Sound.playTone(notes[i], durations[i]);
