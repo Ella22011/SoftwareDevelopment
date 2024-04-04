@@ -98,7 +98,7 @@ public class LineFollower implements Runnable {
                     Delay.msDelay(20000); //20 seconds, Adjust delay time as needed
 
                     // Play music
-                    Sound.playSample(new File("spinMe.wav"), Sound.VOL_MAX);
+                    Sound.playSample(new File("8secSpinMe.wav"), Sound.VOL_MAX);
                 	System.out.println("Spin me right round baby");
                     
                     // Stop motors and exit
