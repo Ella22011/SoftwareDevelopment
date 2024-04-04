@@ -97,7 +97,7 @@ public class LineFollower implements Runnable {
                     motorB.stop();
                     
                     // Pause before playing music
-                    Delay.msDelay(10000); //10 seconds, Adjust delay time as needed
+                    Delay.msDelay(5000); //5 seconds, Adjust delay time as needed
 
                  // Play music
                     playLondonBridgeMusic();
@@ -105,12 +105,12 @@ public class LineFollower implements Runnable {
                     return;
                 }
             }
-            colorSensor.close();
         }
+        colorSensor.close();
     }
 
     /**
-     * Method to play "London Bridge Is Falling Down"
+     * Method to play a part of "London Bridge Is Falling Down"
      */
     private void playLondonBridgeMusic() {
     	int[] notes = { 392, 392, 440, 392, 349, 330, 294 };
